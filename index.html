@@ -85,55 +85,14 @@
 
     <main>
         <div class="section">
-            <h2>1. Transportation: Dijkstra's Algorithm</h2>
-            <p>This algorithm is suitable for finding the shortest path for providing transportation services.</p>
-            <p><strong>Explanation:</strong></p>
-            <ul>
-                <li><strong>Greedy Approach:</strong> It uses a greedy approach to select the shortest path in a weighted graph.</li>
-                <li><strong>Shortest Path:</strong> It calculates the shortest path from a source node to all other nodes in a graph.</li>
-            </ul>
-            <p><strong>C++ Code:</strong></p>
-            <pre>
-void dijkstra(int nodes, vector<pair<int, int>> adj[], int start) {
-    vector<int> dist(nodes, INT_MAX);
-    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> pq;
-
-    dist[start] = 0;
-    pq.push({0, start});
-
-    while (!pq.empty()) {
-        int current_dist = pq.top().first;
-        int current_node = pq.top().second;
-        pq.pop();
-
-        for (auto neighbor : adj[current_node]) {
-            int next_node = neighbor.first;
-            int weight = neighbor.second;
-
-            if (current_dist + weight < dist[next_node]) {
-                dist[next_node] = current_dist + weight;
-                pq.push({dist[next_node], next_node});
-            }
-        }
-    }
-
-    cout << "Shortest distances from source " << start << ":\n";
-    for (int i = 0; i < nodes; ++i) {
-        cout << "To node " << i << " : " << dist[i] << endl;
-    }
-}
-            </pre>
-        </div>
-
-        <div class="section">
-            <h2>2. Agriculture: Kruskal's Algorithm</h2>
+            <h2>1. Agriculture: Kruskal's Algorithm</h2>
             <p>This algorithm can be used to design a network between farmers and warehouses.</p>
             <p><strong>Explanation:</strong></p>
             <ul>
                 <li><strong>Minimum Spanning Tree:</strong> It helps create a minimum spanning tree to connect nodes with the least total weight.</li>
                 <li><strong>Union-Find:</strong> It uses the Union-Find structure to detect cycles and merge trees.</li>
             </ul>
-            <p><strong>C++ Code:</strong></p>
+            <p><strong>Cpp Code:</strong></p>
             <pre>
 #include <bits/stdc++.h>
 using namespace std;
