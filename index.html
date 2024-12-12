@@ -83,7 +83,7 @@
         <h1>Business Cases and Algorithms</h1>
     </header>
 
-    <main> 
+    <main>
         <div class="section">
             <h2>1. Agriculture: Kruskal's Algorithm</h2>
             <p>This algorithm can be used to design a network between farmers and warehouses.</p>
@@ -92,7 +92,7 @@
                 <li><strong>Minimum Spanning Tree:</strong> It helps create a minimum spanning tree to connect nodes with the least total weight.</li>
                 <li><strong>Union-Find:</strong> It uses the Union-Find structure to detect cycles and merge trees.</li>
             </ul>
-            <p><strong>Cpp Code:</strong></p>
+            <p><strong>C++ Code:</strong></p>
             <pre>
 #include <bits/stdc++.h>
 using namespace std;
@@ -143,6 +143,7 @@ public:
     void sort_edges() {
         sort(edge_list.begin(), edge_list.end(), [](tuple<int, int, int>& a, tuple<int, int, int>& b) { return get<0>(a) < get<0>(b); });
     }
+
     int kruskal_algorithm() {
         sort_edges();
         DisjointSet DS(vertices);
@@ -187,7 +188,7 @@ public:
             </ul>
         </div>
         <div class="section">
-            <h2>3. Education: Quick Sort</h2>
+            <h2>2. Education: Quick Sort</h2>
             <p>This algorithm can be used to sort the student data in the desired manner.</p>
             <p><strong>Explanation:</strong></p>
             <ul>
@@ -222,7 +223,8 @@ void quickSort(int A[], int low, int high) {
     quickSort(A, s + 1, high);
 }
             </pre>
-       <div class="sdg">
+        </div>
+        <div class="sdg">
             <h2>Education</h2>
             <h3>SDG 4: Quality Education</h3>
             <ul>
