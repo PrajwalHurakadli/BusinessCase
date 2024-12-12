@@ -184,7 +184,6 @@ public:
     void sort_edges() {
         sort(edge_list.begin(), edge_list.end(), [](tuple<int, int, int>& a, tuple<int, int, int>& b) { return get<0>(a) < get<0>(b); });
     }
-
     int kruskal_algorithm() {
         sort_edges();
         DisjointSet DS(vertices);
