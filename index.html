@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Business Cases</title>
+    <title>Business Case Study: Delivery Services Optimization</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
             line-height: 1.8;
             margin: 0;
             padding: 0;
-            background-color: #eef2f3;
-            color: #2b2b2b;
+            background-color: #f4f6f8;
+            color: #333;
         }
         header {
-            background-color: #34495e;
+            background-color: #2c3e50;
             color: #ecf0f1;
             padding: 20px 0;
             text-align: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
         header h1 {
             margin: 0;
@@ -64,7 +64,7 @@
             color: #34495e;
         }
         footer {
-            background-color: #34495e;
+            background-color: #2c3e50;
             color: #ecf0f1;
             text-align: center;
             padding: 10px 0;
@@ -95,186 +95,180 @@
             border-radius: 5px;
             overflow-x: auto;
         }
+        .highlight {
+            color: #e74c3c;
+        }
     </style>
 </head>
 <body>
+
     <header>
-        <h1>Business Cases</h1>
+        <h1>Business Case Study: Delivery Services Optimization</h1>
     </header>
 
     <main>
+        <!-- Overview Section -->
         <div class="section">
-            
-            <h2>1. Agriculture: Kruskal's Algorithm</h2>
-            <p>This algorithm can be used to design a network between farmers and warehouses.</p>
-            <p><strong>Explanation:</strong></p>
-            <ul>
-                <li><strong>Minimum Spanning Tree:</strong> It helps create a minimum spanning tree to connect nodes with the least total weight.</li>
-                <li><strong>Union-Find:</strong> It uses the Union-Find structure to detect cycles and merge trees.</li>
-            </ul>
-            <br>
-                <details>
-                <summary>View C++ Code</summary>
-                <pre>
-#include <bits/stdc++.h>
-using namespace std;
-
-class DisjointSet {
-private:
-    vector<int> A;
-
-public:
-    DisjointSet(size_t n) {
-        A = vector<int>(n);
-        for (int i = 0; i < n; i++)
-            A[i] = i;
-    }
-
-    bool FIND(int u, int v) {
-        return A[u] == A[v];
-    }
-
-    void UNION(int u, int v) {
-        int temp = A[u];
-        for (int i = 0; i < A.size(); i++) {
-            if (A[i] == temp)
-                A[i] = A[v];
-        }
-    }
-};
-
-class AdjMatrix {
-private:
-    vector<vector<int>> matrix;
-    vector<tuple<int, int, int>> edge_list;
-    size_t vertices;
-
-public:
-    AdjMatrix(size_t vertices): vertices(vertices) {
-        matrix = vector<vector<int>>(vertices, vector<int>(0, vertices));
-    }
-
-    void add_edge(int src, int dest, int weight = 0) {
-        if (src < matrix.size() and dest < matrix.size()) {
-            matrix[src][dest] = weight;
-            matrix[dest][src] = weight;
-            edge_list.push_back(make_tuple(weight, src, dest));
-        }
-    }
-
-    void sort_edges() {
-        sort(edge_list.begin(), edge_list.end(), [](tuple<int, int, int>& a, tuple<int, int, int>& b) { return get<0>(a) < get<0>(b); });
-    }
-
-    int kruskal_algorithm() {
-        sort_edges();
-        DisjointSet DS(vertices);
-        int cost = 0;
-        for (tuple<int, int, int>& x: edge_list) {
-            int src = get<1>(x), dest = get<2>(x);
-            if (DS.FIND(src, dest)) {
-                DS.UNION(src, dest);
-                cost += matrix[src][dest];
-            }
-        }
-        return cost;
-    }
-};
-                </pre>
-            </details>
+            <h2>Overview</h2>
+            <p>The rise of e-commerce and online services has made the delivery industry a vital part of daily life. From postal services to grocery and food delivery, optimizing operations through efficient algorithms can help enhance performance, minimize costs, and improve customer satisfaction. In this case study, we explore the application of algorithms such as Dijkstra’s algorithm, Priority Queue (Min-Heap), Floyd-Warshall, and others to optimize Postal, Newspaper, Courier, and Grocery Delivery Services.</p>
         </div>
-        <div class="sdg">
-            <h2>Agriculture</h2>
-            <h3>SDG 2: Zero Hunger</h3>
-            <ul>
-                <li><strong>Target 2.3:</strong> Double the agricultural productivity and incomes of small-scale food producers.</li>
-                <ul>
-                    <li><strong>Indicator 2.3.1:</strong> Volume of production per labor unit by classes of farming/pastoral/forestry enterprise size.</li>
-                    <li><strong>Indicator 2.3.2:</strong> Average income of small-scale food producers.</li>
-                </ul>
-                <li><strong>Target 2.4:</strong> Ensure sustainable food production systems and resilient agricultural practices.</li>
-                <ul>
-                    <li><strong>Indicator 2.4.1:</strong> Proportion of agricultural area under productive and sustainable agriculture.</li>
-                </ul>
-            </ul>
 
-            <h3>SDG 12: Responsible Consumption and Production</h3>
-            <ul>
-                <li><strong>Target 12.3:</strong> Halve global food waste at the retail and consumer levels and reduce food losses along production and supply chains.</li>
-                <li><strong>Indicator 12.3.1:</strong> Food loss index.</li>
-            </ul>
+        <!-- Postal and Newspaper Delivery -->
+        <div class="section">
+            <h2>Postal Service and Newspaper Delivery Service</h2>
+            <h3>Introduction</h3>
+            <p>Postal and newspaper delivery services are crucial for ensuring that letters, parcels, and newspapers are delivered efficiently to the right locations. However, these services face challenges in terms of optimizing delivery routes and reducing delivery times.</p>
 
-            <h3>SDG 13: Climate Action</h3>
+            <h3>Case 1: Shortest Path for Delivery (Dijkstra's Algorithm / Floyd-Warshall)</h3>
+            <p>One of the most important problems in postal and newspaper delivery services is finding the shortest path between delivery points. This helps reduce delivery time, fuel consumption, and operational costs.</p>
+            <p><strong>Solution:</strong> To find the shortest path between a delivery point and the destination, we can use Dijkstra’s Algorithm or Floyd-Warshall Algorithm. Dijkstra’s algorithm is ideal for finding the shortest path from a single source, while Floyd-Warshall computes shortest paths between all pairs of nodes, which is useful for city-wide delivery planning.</p>
+
+            <h3>Case 2: Parcel Prioritization and Sorting (Priority Queue / Min-Heap)</h3>
+            <p>Parcel prioritization is key to ensuring that urgent deliveries are handled first. By efficiently sorting parcels based on their priority, we can reduce delays and ensure that the most important items reach their destination promptly.</p>
+            <p><strong>Solution:</strong> Instead of traditional sorting algorithms like Merge Sort, we use a **Priority Queue (Min-Heap)** to prioritize parcels. In this system, parcels with higher priority are processed first. The Priority Queue allows for efficient insertion, deletion, and retrieval of the highest-priority items. This method ensures that parcels are sorted dynamically as new deliveries come in.</p>
+        </div>
+
+        <!-- Techniques Section -->
+        <div class="section">
+            <h2>Techniques</h2>
+            <h3>The main Newspaper Agency delivers the newspaper stock to clusters, then from clusters the delivery boys deliver them</h3>
             <ul>
-                <li><strong>Target 13.1:</strong> Strengthen resilience and adaptive capacity to climate-related hazards and natural disasters in all countries.</li>
-                <li><strong>Indicator 13.1.1:</strong> Number of deaths and affected people attributed to disasters per 100,000 population.</li>
+                <li><strong>Clustering:</strong> Divide the city into clusters of homes (e.g., groups of 10-20 homes in nearby areas).</li>
+                <li><strong>Central Nodes:</strong> Use distribution centers or key nodes within each cluster to distribute newspapers or posts to the homes in that cluster.</li>
+                <li><strong>Hierarchical Delivery:</strong>
+                    <ul>
+                        <li><strong>For Newspapers:</strong> Newspapers are delivered daily from the main depot to central nodes (called clusters, similar to CDN networks like Netflix or YouTube), and from there to individual homes.</li>
+                        <li><strong>For Postal Service:</strong> Posts are first sent to regional distribution centers (2-3 days), and then routed to clusters for final delivery.</li>
+                    </ul>
+                </li>
+                <li><strong>Parallel Processing:</strong> Delivery happens simultaneously across clusters, reducing overall delivery time.</li>
             </ul>
         </div>
 
-                
+        <!-- C Code Section -->
         <div class="section">
-            <h2>2. Education: Quick Sort</h2>
-            <p>This algorithm can be used to sort the student data in the desired manner.</p>
-            <p><strong>Explanation:</strong></p>
-            <ul>
-                <li><strong>Pivot Selection:</strong> It selects a pivot element and rearranges the array around it.</li>
-                <li><strong>Divide and Conquer:</strong> The array is divided into smaller subarrays, which are sorted recursively.</li>
-            </ul>
+            <h2>C++ Code for Newspaper Distribution</h2>
             <details>
                 <summary>View C++ Code</summary>
                 <pre>
-#include<bits/stdc++.h>
+#include <iostream>
+#include <limits.h>
+#include <queue>
+#include <string>
+
 using namespace std;
 
-int partition(int A[], int low, int high) {
-    int i = low, j = high, pivot = A[low];
-    while (i < j) {
-        while (A[i] <= pivot)
-            i++;
-        while (A[j] > pivot)
-            j--;
-        if (i < j)
-            swap(A[i], A[j]);
+// Constants
+#define TOTAL_HOMES 200
+#define CLUSTER_SIZE 20
+#define CLUSTERS (TOTAL_HOMES / CLUSTER_SIZE)  // Number of clusters
+#define NUM_NODES 10  // Number of nodes (clusters + central depot)
+#define MAX_PARCELS 100  // Max number of parcels
+
+// Parcel structure for priority queue (binary heap)
+struct Parcel {
+    int parcelId;
+    int priority;  // Lower value means higher priority
+    string description;
+
+    // For the priority queue to work (min-heap based on priority)
+    bool operator<(const Parcel &other) const {
+        return priority > other.priority;  // Lower priority number means higher priority
     }
-    A[low] = A[j];
-    A[j] = pivot;
-    return j;
+};
+
+// Function to find the minimum distance node that hasn't been visited (used in Dijkstra's Algorithm)
+int findMinDistance(const int dist[], const bool visited[], int numNodes) {
+    int min = INT_MAX, min_index;
+    for (int v = 0; v < numNodes; v++) {
+        if (!visited[v] && dist[v] <= min) {
+            min = dist[v];
+            min_index = v;
+        }
+    }
+    return min_index;
 }
 
-void quickSort(int A[], int low, int high) {
-    if (low >= high)
-        return;
-    int s = partition(A, low, high);
-    quickSort(A, low, s - 1);
-    quickSort(A, s + 1, high);
+// Dijkstra's Algorithm to find the shortest path from source to all other nodes
+void dijkstra(const int graph[NUM_NODES][NUM_NODES], int src, int dist[NUM_NODES], int numNodes) {
+    bool visited[NUM_NODES] = {false};
+    dist[src] = 0;
+
+    for (int count = 0; count < numNodes - 1; count++) {
+        int u = findMinDistance(dist, visited, numNodes);
+        visited[u] = true;
+
+        for (int v = 0; v < numNodes; v++) {
+            if (!visited[v] && graph[u][v] && dist[u] != INT_MAX && dist[u] + graph[u][v] < dist[v]) {
+                dist[v] = dist[u] + graph[u][v];
+            }
+        }
+    }
+}
+
+// Function to simulate delivery to central nodes of clusters (Newspaper Service)
+void distributeToClusters(int clusters[CLUSTERS][CLUSTER_SIZE]) {
+    cout << "Step 1: Newspapers delivered to central nodes of " << CLUSTERS << " clusters." << endl;
+}
+
+// Function to simulate delivery from clusters to individual homes (Newspaper Service)
+void distributeToHomes(int clusters[CLUSTERS][CLUSTER_SIZE]) {
+    for (int i = 0; i < CLUSTERS; i++) {
+        cout << "Cluster " << i << " delivering to homes: ";
+        for (int j = 0; j < CLUSTER_SIZE; j++) {
+            cout << "Home " << clusters[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
+int main() {
+    // Sample graph representing distances between central nodes of clusters
+    int graph[NUM_NODES][NUM_NODES] = {
+        {0, 2, 0, 0, 0, 0, 0, 0, 0, 0},
+        {2, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+        {0, 1, 0, 1, 0, 0, 0, 0, 0, 0},
+        {0, 0, 1, 0, 1, 0, 0, 0, 0, 0},
+        {0, 0, 0, 1, 0, 2, 0, 0, 0, 0},
+        {0, 0, 0, 0, 2, 0, 1, 0, 0, 0},
+        {0, 0, 0, 0, 0, 1, 0, 1, 0, 0},
+        {0, 0, 0, 0, 0, 0, 1, 0, 1, 0},
+        {0, 0, 0, 0, 0, 0, 0, 1, 0, 2},
+        {0, 0, 0, 0, 0, 0, 0, 0, 2, 0}
+    };
+
+    // Simulate delivery process
+    int dist[NUM_NODES];
+    fill(dist, dist + NUM_NODES, INT_MAX);
+    dijkstra(graph, 0, dist, NUM_NODES);
+
+    // Print shortest path results (for demonstration purposes)
+    cout << "\nShortest delivery times (in hours) from depot node 0:" << endl;
+    for (int i = 0; i < NUM_NODES; i++) {
+        cout << "Node " << i << ": " << dist[i] << endl;
+    }
+
+    // Create a simple simulation for delivery from clusters to homes
+    int clusters[CLUSTERS][CLUSTER_SIZE] = {{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, {11, 12, 13, 14, 15, 16, 17, 18, 19, 20}};
+    distributeToClusters(clusters);
+    distributeToHomes(clusters);
+
+    return 0;
 }
                 </pre>
             </details>
         </div>
-        <div class="sdg">
-            <h2>Education</h2>
-            <h3>SDG 4: Quality Education</h3>
-            <ul>
-                <li><strong>Target 4.1:</strong> Ensure all girls and boys complete free, equitable, and quality primary and secondary education.</li>
-                <li><strong>Indicator 4.1.1:</strong> Proportion of children achieving minimum proficiency in reading and mathematics.</li>
-                <li><strong>Target 4.2:</strong> Ensure access to quality early childhood development and pre-primary education.</li>
-                <li><strong>Indicator 4.2.1:</strong> Proportion of children under 5 years achieving developmental milestones.</li>
-                <li><strong>Target 4.3:</strong> Ensure equal access to affordable technical, vocational, and tertiary education.</li>
-                <li><strong>Indicator 4.3.1:</strong> Participation rate in education by level (technical, vocational, or tertiary).</li>
-                <li><strong>Target 4.4:</strong> Increase the number of youth and adults with relevant skills for employment.</li>
-                <li><strong>Indicator 4.4.1:</strong> Proportion of youth and adults with ICT skills.</li>
-                <li><strong>Target 4.5:</strong> Eliminate disparities in education based on gender, disability, or economic status.</li>
-                <li><strong>Indicator 4.5.1:</strong> Parity indices (e.g., gender, rural/urban).</li>
-                <li><strong>Target 4.6:</strong> Ensure all youth and adults achieve literacy and numeracy.</li>
-                <li><strong>Indicator 4.6.1:</strong> Literacy rate of youth and adults.</li>
-                <li><strong>Target 4.7:</strong> Promote education for sustainable development, human rights, and cultural diversity.</li>
-                <li><strong>Indicator 4.7.1:</strong> Extent to which global citizenship education is mainstreamed in policies.</li>
-            </ul>
+
+        <!-- Conclusion Section -->
+        <div class="section">
+            <h2>Conclusion</h2>
+            <p>Optimizing delivery services, particularly through the use of algorithms such as Dijkstra's, Priority Queue (Min-Heap), and Floyd-Warshall, is crucial to improving efficiency, reducing costs, and enhancing customer satisfaction. By using these techniques, delivery companies can minimize the time spent on route planning, prioritize urgent deliveries, and ensure that goods are distributed in a timely manner.</p>
         </div>
     </main>
 
     <footer>
-        <p>&copy; 2024 Business Algorithms. All rights reserved.</p>
+        <p>&copy; 2024 Delivery Services Optimization</p>
     </footer>
+
 </body>
 </html>
