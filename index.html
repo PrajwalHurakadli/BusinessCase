@@ -211,10 +211,10 @@ void distributeToClusters(int clusters[CLUSTERS][CLUSTER_SIZE]) {
     cout << "Step 1: Newspapers delivered to central nodes of " << CLUSTERS << " clusters." << endl;
 }
 
-// Function to simulate delivery from clusters to individual homes (Newspaper Service)
+// Function to simulate delivery from clusters to homes (Newspaper Service)
 void distributeToHomes(int clusters[CLUSTERS][CLUSTER_SIZE]) {
     for (int i = 0; i < CLUSTERS; i++) {
-        cout << "Cluster " << i << " delivering to homes: ";
+        cout << "Cluster " << i + 1 << ": Delivering to homes ";
         for (int j = 0; j < CLUSTER_SIZE; j++) {
             cout << "Home " << clusters[i][j] << " ";
         }
@@ -222,39 +222,135 @@ void distributeToHomes(int clusters[CLUSTERS][CLUSTER_SIZE]) {
     }
 }
 
-int main() {
-    // Sample graph representing distances between central nodes of clusters
-    int graph[NUM_NODES][NUM_NODES] = {
-        {0, 2, 0, 0, 0, 0, 0, 0, 0, 0},
-        {2, 0, 1, 0, 0, 0, 0, 0, 0, 0},
-        {0, 1, 0, 1, 0, 0, 0, 0, 0, 0},
-        {0, 0, 1, 0, 1, 0, 0, 0, 0, 0},
-        {0, 0, 0, 1, 0, 2, 0, 0, 0, 0},
-        {0, 0, 0, 0, 2, 0, 1, 0, 0, 0},
-        {0, 0, 0, 0, 0, 1, 0, 1, 0, 0},
-        {0, 0, 0, 0, 0, 0, 1, 0, 1, 0},
-        {0, 0, 0, 0, 0, 0, 0, 1, 0, 2},
-        {0, 0, 0, 0, 0, 0, 0, 0, 2, 0}
-    };
+// Priority queue (min-heap) for parcels based on priority
+class PriorityQueue {
+private:
+    Parcel heap[MAX_PARCELS];
+    int size;
 
-    // Simulate delivery process
-    int dist[NUM_NODES];
-    fill(dist, dist + NUM_NODES, INT_MAX);
-    dijkstra(graph, 0, dist, NUM_NODES);
-
-    // Print shortest path results (for demonstration purposes)
-    cout << "\nShortest delivery times (in hours) from depot node 0:" << endl;
-    for (int i = 0; i < NUM_NODES; i++) {
-        cout << "Node " << i << ": " << dist[i] << endl;
+    void heapifyUp(int index) {
+        while (index > 0 && heap[index].priority < heap[(index - 1) / 2].priority) {
+            swap(heap[index], heap[(index - 1) / 2]);
+            index = (index - 1) / 2;
+        }
     }
 
-    // Create a simple simulation for delivery from clusters to homes
-    int clusters[CLUSTERS][CLUSTER_SIZE] = {{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, {11, 12, 13, 14, 15, 16, 17, 18, 19, 20}};
+    void heapifyDown(int index) {
+        int left = 2 * index + 1;
+        int right = 2 * index + 2;
+        int smallest = index;
+
+        if (left < size && heap[left].priority < heap[smallest].priority) {
+            smallest = left;
+        }
+        if (right < size && heap[right].priority < heap[smallest].priority) {
+            smallest = right;
+        }
+        if (smallest != index) {
+            swap(heap[index], heap[smallest]);
+            heapifyDown(smallest);
+        }
+    }
+
+public:
+    PriorityQueue() : size(0) {}
+
+    void push(const Parcel& p) {
+        if (size < MAX_PARCELS) {
+            heap[size] = p;
+            heapifyUp(size);
+            size++;
+        }
+    }
+
+    Parcel pop() {
+        if (size > 0) {
+            Parcel top = heap[0];
+            heap[0] = heap[size - 1];
+            size--;
+            heapifyDown(0);
+            return top;
+        }
+        return Parcel{ -1, INT_MAX, "" };  // Return invalid parcel if empty
+    }
+
+    bool isEmpty() const {
+        return size == 0;
+    }
+};
+
+int main() {
+    // Graph representation of the city (nodes are clusters and the central depot)
+    int graph[NUM_NODES][NUM_NODES] = {0};
+
+    // Define distances between the central depot and clusters
+    graph[0][1] = 10;
+    graph[0][2] = 20;
+    graph[1][0] = 10;
+    graph[1][2] = 5;
+    graph[2][0] = 20;
+    graph[2][1] = 5;
+    graph[2][3] = 10;
+    graph[3][2] = 10;
+    graph[3][4] = 5;
+    graph[4][3] = 5;
+    graph[4][5] = 15;
+    graph[5][4] = 15;
+    graph[5][6] = 10;
+    graph[6][5] = 10;
+    graph[6][7] = 15;
+    graph[7][6] = 15;
+    graph[7][8] = 5;
+    graph[8][7] = 5;
+    graph[8][9] = 20;
+    graph[9][8] = 20;
+
+    // Calculate shortest distances from the central depot (node 0) to all clusters
+    int dist[NUM_NODES];
+    for (int i = 0; i < NUM_NODES; i++) {
+        dist[i] = INT_MAX;
+    }
+
+    dijkstra(graph, 0, dist, NUM_NODES);
+
+    cout << "Shortest distances from the central depot to each cluster:" << endl;
+    for (int i = 1; i < NUM_NODES; i++) {
+        cout << "Cluster " << i << ": " << dist[i] << " units" << endl;
+    }
+
+    // Simulating cluster and home distribution
+    int clusters[CLUSTERS][CLUSTER_SIZE];
+    int home = 1;
+    for (int i = 0; i < CLUSTERS; i++) {
+        for (int j = 0; j < CLUSTER_SIZE; j++) {
+            clusters[i][j] = home++;
+        }
+    }
+
+    // Step 1: Distribute newspapers to cluster central nodes
     distributeToClusters(clusters);
+
+    // Step 2: Distribute newspapers from clusters to individual homes
     distributeToHomes(clusters);
+
+    // Priority Queue for parcels
+    PriorityQueue parcelQueue;
+
+    // Insert some parcels with different priorities
+    parcelQueue.push({1, 3, "Parcel 1 (Regular)"});
+    parcelQueue.push({2, 1, "Parcel 2 (Express)"});
+    parcelQueue.push({3, 2, "Parcel 3 (Urgent)"});
+
+    // Extract and display parcels in order of priority
+    cout << "\nDelivering parcels in order of priority:" << endl;
+    while (!parcelQueue.isEmpty()) {
+        Parcel p = parcelQueue.pop();
+        cout << "Delivering Parcel " << p.parcelId << ": " << p.description << " (Priority " << p.priority << ")" << endl;
+    }
 
     return 0;
 }
+
                 </pre>
             </details>
         </div>
